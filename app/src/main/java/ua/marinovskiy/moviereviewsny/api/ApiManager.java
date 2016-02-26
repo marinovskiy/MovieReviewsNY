@@ -14,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ua.marinovskiy.moviereviewsny.utils.DateUtils;
 
@@ -33,7 +34,7 @@ public class ApiManager {
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             Interceptor interceptor = chain -> {
                 Request.Builder builder = chain.request().newBuilder()
-                        .url(chain.request().url() + "api-key=" + C.API_KEY);
+                        .url(chain.request().url() + "?api-key=" + C.API_KEY);
                 return chain.proceed(builder.build());
             };
             OkHttpClient client = new OkHttpClient.Builder()
@@ -47,6 +48,7 @@ public class ApiManager {
                     .baseUrl(C.BASE_URL + C.VERSION)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(defaultGson()))
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
             sInstance = retrofit.create(ApiService.class);
         }

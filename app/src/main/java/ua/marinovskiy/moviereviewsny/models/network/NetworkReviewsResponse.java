@@ -1,7 +1,8 @@
 package ua.marinovskiy.moviereviewsny.models.network;
 
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class NetworkReviewsResponse {
 
@@ -11,6 +12,9 @@ public class NetworkReviewsResponse {
 
     @SerializedName("num_results")
     private int numResults;
+
+    @SerializedName("results")
+    private List<NetworkReview> reviews;
 
     public String getStatus() {
         return status;
@@ -34,5 +38,13 @@ public class NetworkReviewsResponse {
 
     public void setNumResults(int numResults) {
         this.numResults = numResults;
+    }
+
+    public List<NetworkReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<NetworkReview> reviews) {
+        this.reviews = reviews;
     }
 }

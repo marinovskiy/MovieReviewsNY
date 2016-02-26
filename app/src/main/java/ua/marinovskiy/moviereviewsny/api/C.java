@@ -8,8 +8,6 @@ public final class C {
 
     public static final String VERSION = "v2/";
 
-    public static final String REVIEWS = "reviews";
-
-    public static final String ALL = "all";
+    public static final String ALL = "reviews/all";
 
 }
