@@ -1,19 +1,18 @@
-package ua.marinovskiy.moviereviewsny.models.network;
+package ua.marinovskiy.moviereviewsny.models.db;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by Alex on 26.02.2016.
+ * Created by Alex on 29.02.2016.
  */
-public class NetworkRelatedUrl {
+public class Link extends RealmObject {
 
     private String type;
 
+    @PrimaryKey
     private String url;
 
-    @SerializedName("suggested_link_text")
     private String suggestedLinkText;
 
     public String getType() {
@@ -39,5 +38,4 @@ public class NetworkRelatedUrl {
     public void setSuggestedLinkText(String suggestedLinkText) {
         this.suggestedLinkText = suggestedLinkText;
     }
-
 }
