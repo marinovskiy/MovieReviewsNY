@@ -7,7 +7,6 @@ import java.util.List;
 import io.realm.RealmList;
 import ua.marinovskiy.moviereviewsny.models.db.Link;
 import ua.marinovskiy.moviereviewsny.models.db.Multimedia;
-import ua.marinovskiy.moviereviewsny.models.db.Resource;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
 import ua.marinovskiy.moviereviewsny.models.network.NetworkLink;
 import ua.marinovskiy.moviereviewsny.models.network.NetworkMultimedia;
@@ -38,19 +37,8 @@ public class ModelConverter {
         }
         Multimedia multimedia = new Multimedia();
         multimedia.setMovieReviewId(networkMultimedia.getMovieReviewId());
-        multimedia.setResources(convertToResource(networkMultimedia.getResources()));
+        multimedia.setSrc(networkMultimedia.getResources().getSrc());
         return multimedia;
-    }
-
-    @Nullable
-    public static Resource convertToResource(@Nullable NetworkResource networkResource) {
-        if (networkResource == null) {
-            return null;
-        }
-        Resource resource = new Resource();
-        resource.setType(networkResource.getType());
-        resource.setSrc(networkResource.getSrc());
-        return resource;
     }
 
     @Nullable

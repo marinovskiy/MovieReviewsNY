@@ -1,7 +1,9 @@
 package ua.marinovskiy.moviereviewsny.ui.adapters;
 
+import android.graphics.Bitmap;
+import android.support.v4.util.Pair;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +14,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import ua.marinovskiy.moviereviewsny.R;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
+import ua.marinovskiy.moviereviewsny.utils.RxUtils;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
 /**
@@ -43,6 +47,11 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         return mReviews != null ? mReviews.size() : 0;
     }
 
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+        holder.unSubscribe();
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -52,15 +61,34 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         @Bind(R.id.tv_movie_title)
         TextView mTvTitle;
 
+        private Subscription mSubscription;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         private void bindReview(Review review) {
-            Utils.loadImage(mIvPoster, review.getMultimedia().getResources().getSrc());
             mTvTitle.setText(review.getDisplayTitle());
-            Log.i("ADAPTERLOGTAG", "bindReview: " + review.getDisplayTitle());
+            Utils.loadImage(mIvPoster, review.getMultimedia().getSrc());
+            mSubscription = RxUtils.generatePalette(review.getMultimedia().getSrc(),
+                    mIvPoster.getContext()).subscribe(this::colorizeUi,
+                    Throwable::printStackTrace);
+        }
+
+        private void colorizeUi(Pair<Palette, Bitmap> paletteBitmapPair) {
+            Palette.Swatch swatch = Utils.findSwatchByMostUsedColor(paletteBitmapPair.first
+                    .getSwatches());
+            if (swatch != null) {
+                mTvTitle.setBackgroundColor(swatch.getRgb());
+                mTvTitle.setTextColor(swatch.getBodyTextColor());
+            }
+        }
+
+        public void unSubscribe() {
+            if (mSubscription != null) {
+                mSubscription.unsubscribe();
+            }
         }
 
     }

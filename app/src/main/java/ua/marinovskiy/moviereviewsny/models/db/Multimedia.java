@@ -11,7 +11,7 @@ public class Multimedia extends RealmObject {
     @PrimaryKey
     private int movieReviewId;
 
-    private Resource resources;
+    private String src;
 
     public int getMovieReviewId() {
         return movieReviewId;
@@ -21,11 +21,11 @@ public class Multimedia extends RealmObject {
         this.movieReviewId = movieReviewId;
     }
 
-    public Resource getResources() {
-        return resources;
+    public String getSrc() {
+        return src;
     }
 
-    public void setResources(Resource resources) {
-        this.resources = resources;
+    public void setSrc(String src) {
+        this.src = src;
     }
 }

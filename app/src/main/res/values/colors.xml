@@ -9,4 +9,5 @@
     <color name="colorDivider">#B6B6B6</color>
     <color name="colorTextIcons">#CFD8DC</color>
     <color name="colorBackground">#EEEEEE</color>
+    <color name="colorToolbarTitle">#FFFFFF</color>
 </resources>

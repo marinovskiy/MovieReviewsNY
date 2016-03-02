@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">MovieReviewsNY</string>
+    <string name="app_name">NY: Movies Reviews</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_retry">retry</string>
+    <string name="retry_hint">An errror occured. Do you want to retry?</string>
 </resources>
