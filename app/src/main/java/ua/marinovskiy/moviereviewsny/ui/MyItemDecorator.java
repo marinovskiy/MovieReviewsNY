@@ -37,7 +37,7 @@ public class MyItemDecorator extends RecyclerView.ItemDecoration {
             outRect.right = mSpace / 2;
         } else if (itemPosition % mGridSize == 2) {
             outRect.left = mSpace / 2;
-            outRect.right = padding;
+            outRect.right = mSpace;
         }
 
 //        outRect.left = mSpace;

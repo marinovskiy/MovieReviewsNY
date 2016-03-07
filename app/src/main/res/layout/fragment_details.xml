@@ -46,8 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:scrollbars="none"
         app:behavior_overlapTop="15dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -59,7 +57,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <ImageView
                     android:id="@+id/small_poster"
@@ -107,20 +107,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:padding="@dimen/medium_padding"
+                android:paddingBottom="@dimen/medium_padding"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/medium_padding"
                 android:text="Summary short"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/tv_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/medium_padding"
+                android:paddingBottom="@dimen/medium_padding"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/medium_padding"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="#757575"
                 android:textSize="14sp"
@@ -132,6 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:text="More"
                 android:textColor="@color/colorAccent" />
 
@@ -139,13 +148,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:padding="@dimen/medium_padding"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:text="Related information" />
+                android:paddingBottom="@dimen/medium_padding"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/medium_padding"
+                android:text="Related information"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@color/colorAccent" />
 
             <include layout="@layout/related_layout" />

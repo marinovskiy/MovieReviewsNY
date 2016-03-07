@@ -9,16 +9,15 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -105,6 +104,8 @@ public class DetailsFragment extends BaseFragment {
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
                 .setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
                 .setShowTitle(true)
+                .setStartAnimations(getContext(), R.anim.slide_in_to_left, R.anim.do_nothing)
+                .setExitAnimations(getContext(), R.anim.do_nothing, R.anim.slide_out_to_right)
                 .build();
     }
 
@@ -143,7 +144,7 @@ public class DetailsFragment extends BaseFragment {
         } else {
             tvRating.setText("No rating");
         }
-        tvSummary.setText(mReview.getSummaryShort());
+        tvSummary.setText(Html.fromHtml(mReview.getSummaryShort()));
         inflateRelated(review.getRelatedUrls());
     }
 
