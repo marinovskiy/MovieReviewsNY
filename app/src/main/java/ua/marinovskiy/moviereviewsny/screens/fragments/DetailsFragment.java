@@ -32,8 +32,8 @@ import ua.marinovskiy.moviereviewsny.utils.Utils;
 
 public class DetailsFragment extends BaseFragment {
 
-    @Bind(R.id.toolbar_details)
-    Toolbar toolbar;
+//    @Bind(R.id.toolbar_details)
+//    Toolbar toolbar;
 
     @Bind(R.id.big_poster)
     ImageView bigPoster;
@@ -74,8 +74,9 @@ public class DetailsFragment extends BaseFragment {
     public static DetailsFragment newInstance(int id) {
         DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(DetailsActivity.KEY_REVIEW_ID, id);
+        bundle.putInt(DetailsActivity.KEY_REVIEW_INDEX, id);
         detailsFragment.setArguments(bundle);
+        detailsFragment.setRetainInstance(true);
         return detailsFragment;
     }
 
@@ -83,7 +84,7 @@ public class DetailsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            id = getArguments().getInt(DetailsActivity.KEY_REVIEW_ID);
+            id = getArguments().getInt(DetailsActivity.KEY_REVIEW_INDEX);
         }
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
@@ -118,10 +119,6 @@ public class DetailsFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbar.setNavigationIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_arrow_back_white));
-        toolbar.setNavigationOnClickListener(v -> {
-            getActivity().onBackPressed();
-        });
         addSubscription(RealmManager.getById(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateUi, Throwable::printStackTrace));
@@ -134,7 +131,7 @@ public class DetailsFragment extends BaseFragment {
 
     private void updateUi(Review review) {
         mReview = review;
-        toolbar.setTitle(mReview.getDisplayTitle());
+        //toolbar.setTitle(mReview.getDisplayTitle());
         Utils.loadImage(bigPoster, mReview.getMultimedia().getSrc());
         Utils.loadImage(smallPoster, mReview.getMultimedia().getSrc());
         tvAuthor.setText(mReview.getByLine());
