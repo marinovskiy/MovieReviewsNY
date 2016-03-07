@@ -40,6 +40,11 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
                 .inflate(R.layout.movie_item, parent, false));
     }
 
+    public void updateList(List<Review> list){
+        mReviews = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bindReview(mReviews.get(position));

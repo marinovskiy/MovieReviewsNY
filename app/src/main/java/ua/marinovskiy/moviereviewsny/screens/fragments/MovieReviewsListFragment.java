@@ -21,6 +21,7 @@ import ua.marinovskiy.moviereviewsny.screens.activities.DetailsActivity;
 import ua.marinovskiy.moviereviewsny.screens.views.ReviewsListView;
 import ua.marinovskiy.moviereviewsny.ui.MyItemDecorator;
 import ua.marinovskiy.moviereviewsny.ui.adapters.MovieReviewsAdapter;
+import ua.marinovskiy.moviereviewsny.ui.listeners.OnItemClickListener;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
 public class MovieReviewsListFragment extends BaseFragment
@@ -84,14 +85,21 @@ public class MovieReviewsListFragment extends BaseFragment
     }
 
     private void updateUi(List<Review> reviews) {
-        MovieReviewsAdapter adapter = new MovieReviewsAdapter(reviews);
-        mRecyclerView.setAdapter(adapter);
-        adapter.setOnClickListener((view, id) -> {
-            Intent intent = new Intent(getContext(), DetailsActivity.class);
-            intent.putExtra(DetailsActivity.KEY_REVIEW_ID, id);
-            startActivity(intent);
-        });
+        MovieReviewsAdapter adapter ;
+        if(mRecyclerView.getAdapter() == null){
+            adapter = new MovieReviewsAdapter(reviews);
+            mRecyclerView.setAdapter(adapter);
+            adapter.setOnClickListener(onItemClickListener);
+        }else {
+            adapter = (MovieReviewsAdapter) mRecyclerView.getAdapter();
+            adapter.updateList(reviews);
+        }
     }
+    private final OnItemClickListener onItemClickListener = (view, id) -> {
+        Intent intent = new Intent(MovieReviewsListFragment.this.getContext(), DetailsActivity.class);
+        intent.putExtra(DetailsActivity.KEY_REVIEW_ID, id);
+        MovieReviewsListFragment.this.startActivity(intent);
+    };
 
     @Override
     public void showLoader() {
