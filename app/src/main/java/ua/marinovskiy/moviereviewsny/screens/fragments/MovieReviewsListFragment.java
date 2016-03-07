@@ -86,9 +86,9 @@ public class MovieReviewsListFragment extends BaseFragment
     private void updateUi(List<Review> reviews) {
         MovieReviewsAdapter adapter = new MovieReviewsAdapter(reviews);
         mRecyclerView.setAdapter(adapter);
-        adapter.setOnClickListener((view, id) -> {
+        adapter.setOnClickListener((view, position) -> {
             Intent intent = new Intent(getContext(), DetailsActivity.class);
-            intent.putExtra(DetailsActivity.KEY_REVIEW_ID, id);
+            intent.putExtra(DetailsActivity.KEY_REVIEW_INDEX, position);
             startActivity(intent);
         });
     }

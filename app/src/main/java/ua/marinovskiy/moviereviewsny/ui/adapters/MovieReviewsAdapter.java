@@ -77,7 +77,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         @Override
         public void onClick(View v) {
             if (mClickListener != null) {
-                mClickListener.onItemClick(v, mReview.getMovieId());
+                mClickListener.onItemClick(v, getAdapterPosition());
             }
         }
 
