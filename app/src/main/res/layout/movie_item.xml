@@ -5,8 +5,11 @@
     android:layout_width="@dimen/movie_item_width"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/medium_padding"
-    app:cardCornerRadius="3dp"
-    app:cardElevation="5dp">
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation">
+
     <!--16:10 -> 1.6:1, 10:16 -> 0.63:1-->
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +33,7 @@
             android:maxLines="2"
             android:minLines="2"
             android:padding="@dimen/small_padding"
-            android:textAppearance="@android:style/TextAppearance.Medium.Inverse"
+            android:textAppearance="@android:style/TextAppearance.Small.Inverse"
             android:textColor="@android:color/white"
             tools:text="Long long movie name" />
 

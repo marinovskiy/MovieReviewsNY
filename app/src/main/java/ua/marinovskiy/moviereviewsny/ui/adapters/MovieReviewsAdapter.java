@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import rx.Subscription;
 import ua.marinovskiy.moviereviewsny.R;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
+import ua.marinovskiy.moviereviewsny.ui.listeners.OnItemClickListener;
 import ua.marinovskiy.moviereviewsny.utils.RxUtils;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
@@ -26,6 +27,8 @@ import ua.marinovskiy.moviereviewsny.utils.Utils;
 public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapter.ViewHolder> {
 
     private List<Review> mReviews;
+
+    private OnItemClickListener mClickListener;
 
     public MovieReviewsAdapter(List<Review> reviews) {
         mReviews = reviews;
@@ -53,7 +56,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         holder.unSubscribe();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.iv_movie_poster)
         ImageView mIvPoster;
@@ -61,17 +64,28 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         @Bind(R.id.tv_movie_title)
         TextView mTvTitle;
 
+        private Review mReview;
+
         private Subscription mSubscription;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
 
+        @Override
+        public void onClick(View v) {
+            if (mClickListener != null) {
+                mClickListener.onItemClick(v, mReview.getMovieId());
+            }
+        }
+
         private void bindReview(Review review) {
-            mTvTitle.setText(review.getDisplayTitle());
-            Utils.loadImage(mIvPoster, review.getMultimedia().getSrc());
-            mSubscription = RxUtils.generatePalette(review.getMultimedia().getSrc(),
+            mReview = review;
+            mTvTitle.setText(mReview.getDisplayTitle());
+            Utils.loadImage(mIvPoster, mReview.getMultimedia().getSrc());
+            mSubscription = RxUtils.generatePalette(mReview.getMultimedia().getSrc(),
                     mIvPoster.getContext()).subscribe(this::colorizeUi,
                     Throwable::printStackTrace);
         }
@@ -90,7 +104,10 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
                 mSubscription.unsubscribe();
             }
         }
+    }
 
+    public void setOnClickListener(OnItemClickListener onClickListener) {
+        mClickListener = onClickListener;
     }
 
 }

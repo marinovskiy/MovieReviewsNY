@@ -1,6 +1,7 @@
 package ua.marinovskiy.moviereviewsny.screens.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,8 +17,9 @@ import java.util.List;
 import butterknife.Bind;
 import ua.marinovskiy.moviereviewsny.R;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
+import ua.marinovskiy.moviereviewsny.screens.activities.DetailsActivity;
 import ua.marinovskiy.moviereviewsny.screens.views.ReviewsListView;
-import ua.marinovskiy.moviereviewsny.ui.ItemDecorationAlbumColumns;
+import ua.marinovskiy.moviereviewsny.ui.MyItemDecorator;
 import ua.marinovskiy.moviereviewsny.ui.adapters.MovieReviewsAdapter;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
@@ -60,8 +62,9 @@ public class MovieReviewsListFragment extends BaseFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mRecyclerView.addItemDecoration(new ItemDecorationAlbumColumns(getResources().getDimensionPixelSize(R.dimen.small_padding), 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        mRecyclerView.addItemDecoration(new MyItemDecorator(getResources().
+                getDimensionPixelSize(R.dimen.myPadding), 3));
     }
 
     @Override
@@ -83,6 +86,11 @@ public class MovieReviewsListFragment extends BaseFragment
     private void updateUi(List<Review> reviews) {
         MovieReviewsAdapter adapter = new MovieReviewsAdapter(reviews);
         mRecyclerView.setAdapter(adapter);
+        adapter.setOnClickListener((view, id) -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra(DetailsActivity.KEY_REVIEW_ID, id);
+            startActivity(intent);
+        });
     }
 
     @Override
