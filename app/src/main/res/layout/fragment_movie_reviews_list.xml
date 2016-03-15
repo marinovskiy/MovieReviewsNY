@@ -5,13 +5,11 @@
     android:layout_gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_reload"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:background="@drawable/list_item_selector">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

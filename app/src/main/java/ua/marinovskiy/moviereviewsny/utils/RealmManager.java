@@ -24,7 +24,7 @@ public class RealmManager {
                 .where(Review.class)
                 .findAllAsync()
                 .asObservable()
-                .filter(RealmResults::isLoaded); // while all data is not loaded will not return data!!! якщо фільтр не виконається онНекст не виконається (може не закритися лоадер)
+                .filter(RealmResults::isLoaded);
     }
 
     public static Observable<Review> getById(int id) {

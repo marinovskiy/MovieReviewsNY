@@ -9,7 +9,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/details_app_bar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -18,8 +18,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="@dimen/details_exp_title_margin_end"
+            app:expandedTitleMarginStart="@dimen/details_exp_title_margin_start"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:toolbarId="@+id/toolbar_details">
 
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:scrollbars="none"
-        app:behavior_overlapTop="15dp"
+        app:behavior_overlapTop="@dimen/details_nested_sv_overlap_top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -56,20 +56,19 @@
 
                 <ImageView
                     android:id="@+id/small_poster"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@android:color/darker_gray" />
+                    android:layout_width="@dimen/width_small_poster"
+                    android:layout_height="@dimen/height_small_poster"
+                    android:src="@color/colorLightPrimary" />
 
                 <TextView
                     android:id="@+id/tv_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/details_author_margin_top"
                     android:layout_toRightOf="@id/small_poster"
                     android:paddingLeft="@dimen/medium_padding"
                     android:paddingRight="@dimen/medium_padding"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    tools:text="James Johns" />
+                    android:textAppearance="@android:style/TextAppearance.Medium" />
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -80,8 +79,7 @@
                     android:layout_toRightOf="@id/small_poster"
                     android:paddingLeft="@dimen/medium_padding"
                     android:paddingRight="@dimen/medium_padding"
-                    android:textAppearance="@android:style/TextAppearance.Small"
-                    tools:text="17th January" />
+                    android:textAppearance="@android:style/TextAppearance.Small" />
 
                 <TextView
                     android:id="@+id/tv_rating"
@@ -91,8 +89,7 @@
                     android:layout_marginTop="@dimen/small_padding"
                     android:layout_toRightOf="@id/small_poster"
                     android:paddingLeft="@dimen/medium_padding"
-                    android:paddingRight="@dimen/medium_padding"
-                    tools:text="Rating" />
+                    android:paddingRight="@dimen/medium_padding" />
 
             </RelativeLayout>
 
@@ -104,12 +101,12 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/medium_padding"
-                android:text="Summary short"
+                android:text="@string/label_summary_short"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/details_height_line"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@color/colorAccent" />
@@ -123,9 +120,8 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/medium_padding"
                 android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="#757575"
-                android:textSize="14sp"
-                tools:text="Summary shortSummary shortSummary shortSummary short" />
+                android:textColor="@color/colorSummaryText"
+                android:textSize="@dimen/details_summary_text_size"/>
 
             <Button
                 android:id="@+id/btn_more"
@@ -134,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:text="More"
+                android:text="@string/label_btn_more"
                 android:textColor="@color/colorAccent" />
 
             <TextView
@@ -145,12 +141,12 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/medium_padding"
-                android:text="Related information"
+                android:text="@string/label_related_information"
                 android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/details_height_line"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@color/colorAccent" />

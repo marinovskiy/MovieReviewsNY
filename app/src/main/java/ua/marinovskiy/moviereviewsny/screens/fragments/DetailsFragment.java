@@ -8,7 +8,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +30,6 @@ import ua.marinovskiy.moviereviewsny.utils.RealmManager;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
 public class DetailsFragment extends BaseFragment {
-
-//    @Bind(R.id.toolbar_details)
-//    Toolbar toolbar;
 
     @Bind(R.id.big_poster)
     ImageView bigPoster;
@@ -76,7 +72,6 @@ public class DetailsFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putInt(DetailsActivity.KEY_REVIEW_INDEX, id);
         detailsFragment.setArguments(bundle);
-        detailsFragment.setRetainInstance(true);
         return detailsFragment;
     }
 
@@ -88,7 +83,8 @@ public class DetailsFragment extends BaseFragment {
         }
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
-            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+            public void onCustomTabsServiceConnected(ComponentName componentName,
+                                                     CustomTabsClient customTabsClient) {
                 mClient = customTabsClient;
                 mClient.warmup(0L);
                 mCustomTabsSession = mClient.newSession(null);
@@ -100,7 +96,8 @@ public class DetailsFragment extends BaseFragment {
             }
         };
 
-        CustomTabsClient.bindCustomTabsService(getContext(), CUSTOM_TAB_PACKAGE_NAME, mCustomTabsServiceConnection);
+        CustomTabsClient.bindCustomTabsService(getContext(), CUSTOM_TAB_PACKAGE_NAME,
+                mCustomTabsServiceConnection);
 
         customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
                 .setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary))
@@ -131,15 +128,14 @@ public class DetailsFragment extends BaseFragment {
 
     private void updateUi(Review review) {
         mReview = review;
-        //toolbar.setTitle(mReview.getDisplayTitle());
-        Utils.loadImage(bigPoster, mReview.getMultimedia().getSrc());
+        Utils.loadImageWithBlurEffect(bigPoster, mReview.getMultimedia().getSrc());
         Utils.loadImage(smallPoster, mReview.getMultimedia().getSrc());
         tvAuthor.setText(mReview.getByLine());
         tvDate.setText(DateUtils.formatDate(mReview.getDateUpdated()));
         if (mReview.getMpaaRating() != null) {
             tvRating.setText(mReview.getMpaaRating());
         } else {
-            tvRating.setText("No rating");
+            tvRating.setText(R.string.text_no_rating);
         }
         tvSummary.setText(Html.fromHtml(mReview.getSummaryShort()));
         inflateRelated(review.getRelatedUrls());
@@ -148,14 +144,10 @@ public class DetailsFragment extends BaseFragment {
     private void inflateRelated(List<Link> relatedUrls) {
         llRelatedUrlsContainer.removeAllViews();
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        //int[] androidColors = getResources().getIntArray(R.array.androidcolors);
         for (Link relatedUrl : relatedUrls) {
             TextView url = (TextView) layoutInflater.inflate(R.layout.related_item_layout,
                     llRelatedUrlsContainer, false);
             url.setText(relatedUrl.getType());
-//            int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-//            url.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.related_item_selector));
-//            url.setBackgroundColor(randomAndroidColor);
             llRelatedUrlsContainer.addView(url);
             url.setOnClickListener(v -> customTabsIntent.launchUrl(getActivity(),
                     Uri.parse(relatedUrl.getUrl())));

@@ -1,5 +1,7 @@
 package ua.marinovskiy.moviereviewsny.screens.fragments;
 
+import android.support.annotation.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class ReviewsListViewManager {
         mBaseFragment = null;
     }
 
-    private void getMoviesReviewsFromDb() {
+    public void getMoviesReviewsFromDb() {
         mBaseFragment.addSubscription(
                 RealmManager.allReviews()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +52,7 @@ public class ReviewsListViewManager {
         );
     }
 
-    private void getMoviesReviewsFromNetwork() {
+    public void getMoviesReviewsFromNetwork() {
         if (Utils.hasInternet(mBaseFragment.getContext())) {
             mReviewsListView.hideRetry();
             mReviewsListView.showLoader();

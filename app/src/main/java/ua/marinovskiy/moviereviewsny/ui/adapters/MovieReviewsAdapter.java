@@ -18,7 +18,6 @@ import rx.Subscription;
 import ua.marinovskiy.moviereviewsny.R;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
 import ua.marinovskiy.moviereviewsny.ui.listeners.OnItemClickListener;
-import ua.marinovskiy.moviereviewsny.utils.RxUtils;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
 /**
@@ -40,9 +39,8 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
                 .inflate(R.layout.movie_item, parent, false));
     }
 
-    public void updateList(List<Review> list){
+    public void updateList(List<Review> list) {
         mReviews = list;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -69,6 +67,12 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         @Bind(R.id.tv_movie_title)
         TextView mTvTitle;
 
+        @Bind(R.id.tv_movie_rating)
+        TextView mTvMovieRating;
+
+        @Bind(R.id.tv_movie_author)
+        TextView mTvMovieAuthor;
+
         private Review mReview;
 
         private Subscription mSubscription;
@@ -89,19 +93,13 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         private void bindReview(Review review) {
             mReview = review;
             mTvTitle.setText(mReview.getDisplayTitle());
-            Utils.loadImage(mIvPoster, mReview.getMultimedia().getSrc());
-            mSubscription = RxUtils.generatePalette(mReview.getMultimedia().getSrc(),
-                    mIvPoster.getContext()).subscribe(this::colorizeUi,
-                    Throwable::printStackTrace);
-        }
-
-        private void colorizeUi(Pair<Palette, Bitmap> paletteBitmapPair) {
-            Palette.Swatch swatch = Utils.findSwatchByMostUsedColor(paletteBitmapPair.first
-                    .getSwatches());
-            if (swatch != null) {
-                mTvTitle.setBackgroundColor(swatch.getRgb());
-                mTvTitle.setTextColor(swatch.getBodyTextColor());
+            mTvMovieAuthor.setText(mReview.getByLine());
+            if (mReview.getMpaaRating() != null) {
+                mTvMovieRating.setText(mReview.getMpaaRating());
+            } else {
+                mTvMovieRating.setText(R.string.text_no_rating);
             }
+            Utils.loadImage(mIvPoster, mReview.getMultimedia().getSrc());
         }
 
         public void unSubscribe() {

@@ -1,7 +1,6 @@
 package ua.marinovskiy.moviereviewsny.models.db;
 
 import java.util.Date;
-import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

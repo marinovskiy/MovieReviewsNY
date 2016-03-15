@@ -10,7 +10,6 @@ import ua.marinovskiy.moviereviewsny.models.db.Multimedia;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
 import ua.marinovskiy.moviereviewsny.models.network.NetworkLink;
 import ua.marinovskiy.moviereviewsny.models.network.NetworkMultimedia;
-import ua.marinovskiy.moviereviewsny.models.network.NetworkResource;
 import ua.marinovskiy.moviereviewsny.models.network.NetworkReview;
 
 /**

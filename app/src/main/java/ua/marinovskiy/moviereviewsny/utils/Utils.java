@@ -2,6 +2,8 @@ package ua.marinovskiy.moviereviewsny.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -14,11 +16,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import ua.marinovskiy.moviereviewsny.R;
 
 /**
@@ -57,6 +58,19 @@ public class Utils {
                 .into(imageView);
     }
 
+    public static void loadImageWithBlurEffect(ImageView imageView, String url) {
+        if (imageView == null || imageView.getContext() == null
+                || imageView.getContext().isRestricted()) {
+            return;
+        }
+        Glide
+                .with(imageView.getContext())
+                .load(url)
+                .bitmapTransform(new BlurTransformation(imageView.getContext(), 4))
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
+    }
+
     public static void showRetryDialog(Context context, @StringRes int message,
                                        @Nullable DialogInterface.OnClickListener onClickListener) {
         AlertDialog alertDialog = new AlertDialog.Builder(context)
@@ -65,6 +79,10 @@ public class Utils {
                 .setNegativeButton(android.R.string.no, null)
                 .create();
         alertDialog.show();
+    }
+
+    public static boolean isLand(Resources resources) {
+        return resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
 }
