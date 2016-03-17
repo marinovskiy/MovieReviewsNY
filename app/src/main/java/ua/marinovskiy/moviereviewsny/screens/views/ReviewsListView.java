@@ -17,8 +17,6 @@ public interface ReviewsListView {
 
     void showRetry();
 
-    void hideRetry();
-
     void refresh();
 
     void renderList(List<Review> reviews);

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -28,13 +28,13 @@ import ua.marinovskiy.moviereviewsny.utils.Utils;
 public class MovieReviewsListFragment extends BaseFragment
         implements ReviewsListView {
 
-    public static final String TAG = "MovieReviewsListFragment";
+    public static final String TAG = "MovieReviewsList";
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    @Bind(R.id.progressBar)
-    ProgressBar mProgressBar;
+    @Bind(R.id.no_reviews)
+    LinearLayout mNoReviews;
 
     @Bind(R.id.swipe_reload)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -42,9 +42,12 @@ public class MovieReviewsListFragment extends BaseFragment
     private ReviewsListViewManager mReviewsListViewManager;
 
     private ListFragmentCallback mListFragmentCallback;
-
+    private final OnItemClickListener onItemClickListener = (view, id) -> {
+        if (mListFragmentCallback != null) {
+            mListFragmentCallback.onReviewClick(id);
+        }
+    };
     private boolean mIsAnimated = false;
-
     private boolean mIsAnimating = false;
 
     public MovieReviewsListFragment() {
@@ -93,32 +96,14 @@ public class MovieReviewsListFragment extends BaseFragment
     }
 
     private void updateUi(List<Review> reviews) {
+        mNoReviews.setVisibility(View.GONE);
         MovieReviewsAdapter adapter;
         if (mRecyclerView.getAdapter() == null) {
             adapter = new MovieReviewsAdapter(reviews);
             mRecyclerView.setAdapter(adapter);
             adapter.setOnClickListener(onItemClickListener);
             if (!mIsAnimated) {
-                mRecyclerView.getViewTreeObserver()
-                        .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                mIsAnimating = true;
-                                mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                                for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
-                                    mRecyclerView.getChildAt(i).setTranslationX(mRecyclerView.getWidth());
-                                    ViewPropertyAnimator animate = mRecyclerView.getChildAt(i).animate();
-                                    if (i == mRecyclerView.getChildCount() - 1) {
-                                        animate.withEndAction(() -> {
-                                            mIsAnimating = false;
-                                            adapter.notifyDataSetChanged();
-                                        });
-                                    }
-                                    animate.setDuration(600).setStartDelay(i * 100).translationX(0).start();
-                                }
-                                return true;
-                            }
-                        });
+                startUpAnimation(adapter);
             }
         } else {
             adapter = (MovieReviewsAdapter) mRecyclerView.getAdapter();
@@ -129,25 +114,41 @@ public class MovieReviewsListFragment extends BaseFragment
         }
     }
 
-    private final OnItemClickListener onItemClickListener = (view, id) -> {
-        if (mListFragmentCallback != null) {
-            mListFragmentCallback.onReviewClick(id);
-        }
-    };
+    private void startUpAnimation(final MovieReviewsAdapter adapter) {
+        mRecyclerView.getViewTreeObserver()
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        mIsAnimating = true;
+                        mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
+                            mRecyclerView.getChildAt(i).setTranslationX(mRecyclerView.getWidth());
+                            ViewPropertyAnimator animate = mRecyclerView.getChildAt(i).animate();
+                            if (i == mRecyclerView.getChildCount() - 1) {
+                                animate.withEndAction(() -> {
+                                    mIsAnimating = false;
+                                    adapter.notifyDataSetChanged();
+                                });
+                            }
+                            animate.setDuration(600).setStartDelay(i * 100).translationX(0).start();
+                        }
+                        return true;
+                    }
+                });
+    }
 
     @Override
     public void showLoader() {
         if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 0) {
             return;
         }
-        if (!mSwipeRefreshLayout.isRefreshing()) {
-            mProgressBar.setVisibility(View.VISIBLE);
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(true);
         }
     }
 
     @Override
     public void hideLoader() {
-        mProgressBar.setVisibility(View.GONE);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -159,13 +160,19 @@ public class MovieReviewsListFragment extends BaseFragment
     @Override
     public void showRetry() {
         Utils.showRetryDialog(getContext(), R.string.retry_hint, (dialog, which) -> {
-            mReviewsListViewManager.reload();
+            switch (which) {
+                case -1:
+                    if (Utils.hasInternet(getContext())) {
+                        mReviewsListViewManager.reload();
+                    } else {
+                        Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case -2:
+                    getActivity().finish();
+                    break;
+            }
         });
-    }
-
-    @Override
-    public void hideRetry() {
-        // TODO btn in layout
     }
 
     @Override
@@ -176,7 +183,11 @@ public class MovieReviewsListFragment extends BaseFragment
     @Override
     public void renderList(List<Review> reviews) {
         hideLoader();
-        updateUi(reviews);
+        if (reviews.size() != 0) {
+            updateUi(reviews);
+        } else {
+            mNoReviews.setVisibility(View.VISIBLE);
+        }
         if (mListFragmentCallback != null) {
             mListFragmentCallback.onReviewsLoaded(reviews);
         }

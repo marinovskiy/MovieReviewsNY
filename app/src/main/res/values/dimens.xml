@@ -6,6 +6,11 @@
     <dimen name="small_padding">4dp</dimen>
     <dimen name="medium_padding">8dp</dimen>
 
+    <!--list-->
+    <dimen name="img_empty_width">100dp</dimen>
+    <dimen name="img_empty_height">100dp</dimen>
+    <dimen name="txt_empty_text_size">20sp</dimen>
+
     <!--card view-->
     <dimen name="card_height">100dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>

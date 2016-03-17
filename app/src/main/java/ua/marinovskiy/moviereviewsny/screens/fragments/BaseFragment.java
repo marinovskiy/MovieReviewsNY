@@ -36,7 +36,7 @@ public class BaseFragment extends Fragment {
         super.onDetach();
     }
 
-    protected void addSubscription(Subscription subscription) {
+    public void addSubscription(Subscription subscription) {
         mCompositeSubscription.add(subscription);
     }
 }

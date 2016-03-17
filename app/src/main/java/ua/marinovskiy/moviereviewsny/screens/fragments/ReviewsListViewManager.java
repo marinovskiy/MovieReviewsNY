@@ -1,7 +1,5 @@
 package ua.marinovskiy.moviereviewsny.screens.fragments;
 
-import android.support.annotation.VisibleForTesting;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +52,6 @@ public class ReviewsListViewManager {
 
     public void getMoviesReviewsFromNetwork() {
         if (Utils.hasInternet(mBaseFragment.getContext())) {
-            mReviewsListView.hideRetry();
             mReviewsListView.showLoader();
             mBaseFragment.addSubscription(
                     ApiManager.getInstance()
