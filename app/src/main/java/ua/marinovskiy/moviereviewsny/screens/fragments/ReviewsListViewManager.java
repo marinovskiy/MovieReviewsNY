@@ -13,9 +13,6 @@ import ua.marinovskiy.moviereviewsny.utils.ModelConverter;
 import ua.marinovskiy.moviereviewsny.utils.RealmManager;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
 
-/**
- * Created by Alex on 02.03.2016.
- */
 public class ReviewsListViewManager {
 
     private ReviewsListView mReviewsListView;
@@ -28,7 +25,7 @@ public class ReviewsListViewManager {
 
     public void initialize() {
         getMoviesReviewsFromDb();
-        getMoviesReviewsFromNetwork();
+        getMoviesReviewsFromNetwork(0);
     }
 
     public void reload() {
@@ -50,12 +47,12 @@ public class ReviewsListViewManager {
         );
     }
 
-    public void getMoviesReviewsFromNetwork() {
+    public void getMoviesReviewsFromNetwork(int offset) {
         if (Utils.hasInternet(mBaseFragment.getContext())) {
             mReviewsListView.showLoader();
             mBaseFragment.addSubscription(
                     ApiManager.getInstance()
-                            .allResponses()
+                            .allResponses(offset)
                             .map(response -> {
                                 List<Review> reviews = new ArrayList<>();
                                 for (NetworkReview networkReview : response.getReviews()) {
@@ -72,6 +69,7 @@ public class ReviewsListViewManager {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(mReviewsListView::renderList,
                                     throwable -> {
+                                        throwable.printStackTrace();
                                         mReviewsListView.showErrorMessage(throwable.getMessage());
                                         mReviewsListView.hideLoader();
                                         mReviewsListView.showRetry();
@@ -80,6 +78,10 @@ public class ReviewsListViewManager {
         } else {
             mReviewsListView.hideLoader();
         }
+    }
+
+    public void loadMore(int offset) {
+        getMoviesReviewsFromNetwork(offset);
     }
 
 }

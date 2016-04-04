@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import ua.marinovskiy.moviereviewsny.R;
 import ua.marinovskiy.moviereviewsny.interfaces.ListFragmentCallback;
 import ua.marinovskiy.moviereviewsny.models.db.Review;
 import ua.marinovskiy.moviereviewsny.screens.views.ReviewsListView;
+import ua.marinovskiy.moviereviewsny.ui.adapters.AutoLoadingRecyclerView;
 import ua.marinovskiy.moviereviewsny.ui.adapters.MovieReviewsAdapter;
 import ua.marinovskiy.moviereviewsny.ui.listeners.OnItemClickListener;
 import ua.marinovskiy.moviereviewsny.utils.Utils;
@@ -31,7 +31,7 @@ public class MovieReviewsListFragment extends BaseFragment
     public static final String TAG = "MovieReviewsList";
 
     @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    AutoLoadingRecyclerView mRecyclerView;
 
     @Bind(R.id.no_reviews)
     LinearLayout mNoReviews;
@@ -101,6 +101,8 @@ public class MovieReviewsListFragment extends BaseFragment
         if (mRecyclerView.getAdapter() == null) {
             adapter = new MovieReviewsAdapter(reviews);
             mRecyclerView.setAdapter(adapter);
+            mRecyclerView.setOnLoadMoreListener(20, offsetLimit ->
+                    mReviewsListViewManager.loadMore(offsetLimit.getOffset()));
             adapter.setOnClickListener(onItemClickListener);
             if (!mIsAnimated) {
                 startUpAnimation(adapter);

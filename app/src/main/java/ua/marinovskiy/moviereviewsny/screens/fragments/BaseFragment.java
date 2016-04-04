@@ -8,9 +8,6 @@ import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-/**
- * Created by Alex on 29.02.2016.
- */
 public class BaseFragment extends Fragment {
 
     private final CompositeSubscription mCompositeSubscription = new CompositeSubscription();

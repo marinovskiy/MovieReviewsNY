@@ -32,7 +32,7 @@ public class ApiManager {
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             Interceptor interceptor = chain -> {
                 Request.Builder builder = chain.request().newBuilder()
-                        .url(chain.request().url() + "?api-key=" + C.API_KEY);
+                        .url(chain.request().url() + "&api-key=" + C.API_KEY);
                 return chain.proceed(builder.build());
             };
             OkHttpClient client = new OkHttpClient.Builder()
